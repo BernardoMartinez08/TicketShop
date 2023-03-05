@@ -1,20 +1,28 @@
-﻿using Newtonsoft.Json;
-using TicketShop.Gateway.Dtos.Events;
+﻿using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using TicketShop.Gateway.Settings;
 using TicketShop.Gateway.Services.Event;
+using TicketShop.Gateway.Dtos.Events;
 
 namespace TicketShop.Gateway.Services;
 
 public class EventService : IEventService
 {
     private readonly HttpClient _httpClient;
-    public EventService(HttpClient httpClient)
+    private readonly IServiceRegistry _serviceRegistry;
+    private readonly ApplicationSettings _appSettings;
+
+    public EventService(HttpClient httpClient, IServiceRegistry serviceRegistry, IOptions<ApplicationSettings> appSettings)
     {
         _httpClient = httpClient;
+        _serviceRegistry = serviceRegistry;
+        _appSettings = appSettings.Value;
     }
 
     public async Task<IEnumerable<EventDataTransferObject>> GetEventsAsync(Guid? categoryId, string? name)
     {
-        var baseUrl = "http://localhost:5194/events";
+        var eventsUrl = await this._serviceRegistry.GetService(_appSettings.EventCatalogServiceId);
+        var baseUrl = $"{eventsUrl.Origin}/events";
         if (categoryId is not null && name is null)
         {
             baseUrl = $"{baseUrl}?categoryId={categoryId}";
@@ -34,7 +42,8 @@ public class EventService : IEventService
 
     public async Task<EventDataTransferObject> GetEventAsync(Guid eventId)
     {
-        var baseUrl = "http://localhost:5194/events";
+        var eventsUrl = await this._serviceRegistry.GetService(_appSettings.EventCatalogServiceId);
+        var baseUrl = $"{eventsUrl.Origin}/events";
         var result = await this._httpClient.GetStringAsync($"{baseUrl}/{eventId}");
         return JsonConvert.DeserializeObject<EventDataTransferObject>(result);
     }
