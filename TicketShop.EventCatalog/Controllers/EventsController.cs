@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using TicketShop.EventCatalog.Dtos;
 
 namespace TicketShop.EventCatalog.Controllers
@@ -84,7 +83,7 @@ namespace TicketShop.EventCatalog.Controllers
 
             if (categoryId is not null)
             {
-                currentEvents =  currentEvents.Any()
+                currentEvents = currentEvents.Any()
                     ?
                         currentEvents.Where(@event => @event.CategoryId == categoryId).ToList()
                     :

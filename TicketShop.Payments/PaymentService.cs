@@ -40,15 +40,6 @@ public class PaymentService : BackgroundService
         return Task.CompletedTask;
     }
 
-    // private async void OnReceived(object? model, BasicDeliverEventArgs content)
-    // {
-    //     var body = content.Body.ToArray();
-    //     var json = Encoding.UTF8.GetString(body);
-    //     var paymentInformation = JsonConvert.DeserializeObject<PaymentInformationDataTransferObject>(json);
-    //     var paymentResult = await ProcessPayment(paymentInformation);
-    //     var message = $"El pago para el carrito {paymentInformation.BasketId} se proceso con estado {paymentResult}";
-    //     Console.WriteLine(message);
-    // }
 
     private async Task<bool> ProcessPayment(PaymentInformationDataTransferObject paymentInformation,
         CancellationToken token)

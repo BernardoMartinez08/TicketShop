@@ -15,10 +15,11 @@ public class ShoppingBasketsController : ControllerBase
     private readonly IShoppingBasketService _shoppingBasketService;
     private readonly IShoppingBasketLinesService _shoppingBasketLinesService;
     private readonly List<PaymentTransaction> _paymentTransactions;
-    public ShoppingBasketsController(IShoppingBasketService shoppingBasketService)
+    public ShoppingBasketsController(IShoppingBasketService shoppingBasketService, IShoppingBasketLinesService shoppingBasketLinesService)
     {
         _shoppingBasketService = shoppingBasketService;
-        _paymentTransactions = new List<PaymentTransaction>();
+        _shoppingBasketLinesService = shoppingBasketLinesService;
+        _paymentTransactions = DataBases.DataBase.paymentTransactions;
     }
 
     [HttpPost]
