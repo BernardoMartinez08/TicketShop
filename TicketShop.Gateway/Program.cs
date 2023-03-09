@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TicketShop.Gateway.BackgroundServices;
 using TicketShop.Gateway.Dtos;
 using TicketShop.Gateway.Services;
 using TicketShop.Gateway.Services.Event;
@@ -14,6 +15,7 @@ builder.Services.AddHttpClient<IEventService, EventService>();
 builder.Services.AddHttpClient<ICategoryService, CategoryService>();
 builder.Services.AddHttpClient<IShoppingBasketService, ShoppingBasketService>();
 builder.Services.AddHttpClient<IShoppingBasketLinesService, ShoppingBasketLinesService>();
+builder.Services.AddHostedService<PaymentNotificationService>();
 var app = builder.Build();
 
 app.MapControllers();
